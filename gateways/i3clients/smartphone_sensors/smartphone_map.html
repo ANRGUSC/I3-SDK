@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <style>
+       #map {
+        height: 500px;
+        width: 100%
+       }
+       body {
+	 font-family: Ariel, Helvetica, sans-serif;
+       }
+    </style>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALZgGws3IIr5O3LcWZTCD3W3IKa0l6YrI&callback=initMap">
+    </script>
+    <script src="mqttws31.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+	// Create a client instance: Broker, Port, Websocket Path, Client ID
+	client = new Paho.MQTT.Client("imscspark3.usc.edu", Number(1990),"erikalar");
+	 
+	// set callback handlers
+	function onConnect(){
+	    console.log('Connected!');
+	    client.subscribe('devices/smartphones/sensors/all');
+        document.getElementById("connected").innerHTML = "Connected"
+	}
+        
+    function onFailure(){
+        console.log('Failed to connect.');
+        document.getElementById("connected").innerHTML = "Failed to connected";
+    }    
+        
+	client.onConnectionLost = function (responseObject) {
+	    console.log("Connection Lost: "+responseObject.errorMessage);
+        document.getElementById("connected").innerHTML = "Connection lost.";
+	}
+	 
+	client.onMessageArrived = function (message) {
+	  //console.log(message.payloadString);	
+	  var data = JSON.parse(message.payloadString);
+	  setMarker(data);
+	}
+    
+    var set = false;
+    // This function is called when a message arrives.
+	function setMarker(data){
+        var content = "<p>Location: "+data.Location.Latitude+", "+data.Location.Longitude
+        +"<br>Light: "+data.Light_Sensor+" lm<br>Air Pressure: "+data.Barometer+" mbar<br>Last Update: "+data.Datetime+"</p>";
+        var position = new google.maps.LatLng(data.Location.Latitude, data.Location.Longitude);
+        if(!set){
+	       map.setCenter(position);
+           set = true;
+        }
+	    phone_marker.setPosition(position);
+	    phone_marker.setVisible(true);
+	    infowindow.setContent(content);
+	    infowindow.open(map,phone_marker);
+	}
+
+    var map;
+    var phone_marker;
+    var infowindow;
+
+    // Initialize map
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 18,
+          center: {lat: 34.0201, lng: -118.2899}
+        });
+
+	   phone_marker = new google.maps.Marker({
+				    position: new google.maps.LatLng(34.0201, -118.2899),
+				    visible: false,
+                    icon: 'smartphone.png',
+				    map: map
+				    });
+
+       infowindow = new google.maps.InfoWindow();
+           
+        // Connect the client, providing an onConnect callback
+        client.connect({
+            onSuccess: onConnect,
+            onFailure: onFailure,
+            userName : 'erikalar',
+            password : 'clntcp'
+        }); 
+    }
+    </script>
+
+</head>
+    
+<body>
+    <h3 style="float:left">Smartphone Sensor Output</h3>
+    <h4 id="connected" style="float:right">Connecting...<h4/>
+    <div id="map" ></div>
+</body>
+</html>
+
+
+
+
+
+
+
+

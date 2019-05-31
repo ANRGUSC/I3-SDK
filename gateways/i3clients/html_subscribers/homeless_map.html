@@ -1,0 +1,195 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+#map {
+height: 400px;
+width: 100%
+}
+body {
+ font-family: "Times New Roman", Georgia, Serif;
+ background-color:   #eef347;
+}
+
+</style>
+
+</head>
+<script type="text/javascript">
+	var first, last;
+
+
+	var num = 0;
+	var json_data;
+        var pinIconH = 'http://www.googlemapsmarkers.com/v1/H/ADFF2F/';
+        var markersH = [];
+	$.getJSON('https://data.lacity.org/resource/d4vt-q4t5.json?$limit=200&$offset='+num.toString()+'&$order=createddate DESC&$where=requesttype = "Homeless Encampment"', function(data) {
+    //data is the JSON string
+	json_data = data;
+	initMap()
+	document.getElementById("up").disabled = false;
+	document.getElementById("down").disabled = false;
+        });
+
+	function showData(){
+		var datai = {};
+		console.log(json_data.length);
+		for(var i=0;i<json_data.length;i++){
+			console.log(json_data[i]);
+		}
+	}
+
+
+      function initMap() {
+
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 10,
+          center: {lat: 34.0522, lng: -118.2437}
+        });
+
+        var trafficLayer = new google.maps.TrafficLayer();
+            trafficLayer.setMap(map);
+	markersH = makeMarkers(pinIconH);
+	markersH = reverseOrder(markersH);
+
+	function makeMarkers(pinIcon){
+	  markers = []
+	  for (var i=0; i<json_data.length; i++){
+	     markers.push({
+				    data : json_data[i],
+				    marker : new google.maps.Marker({
+				    position: new google.maps.LatLng(json_data[i].latitude, json_data[i].longitude),
+				    visible: false,
+				    icon: pinIcon,
+				    map: map
+				    }),
+			   window : new google.maps.InfoWindow(),
+			   contentString : '<p><b>request type:  </b>' + json_data[i].requesttype + '<br>' +
+            				   '<b>address:  </b>' + json_data[i].address + '<br>' +
+           				   '<b>police precinct:  </b>' + json_data[i].policeprecinct + '<br>' +
+            				   '<b>created date:  </b>' + json_data[i].createddate + '<br>' +
+            				   '<b>action taken:  </b>' + json_data[i].actiontaken +'</p>',
+			   loaded : false
+		});
+
+	     var infowindow = markers[i].window;
+	     google.maps.event.addListener(markers[i].marker, 'click', (function (infowindow) {
+                    return function () {infowindow.open(map, this);}
+                })(infowindow));
+
+	    markers[i].window.setContent(markers[i].contentString);
+
+	  }
+	  return markers
+        }
+      }
+
+
+    function reverseOrder(markers){
+	var rmarkers=[];
+        for(var i=markers.length-1;i>=0;i--){
+	    rmarkers.push(markers[i]);
+	}
+	return rmarkers;
+    }
+
+    var count = 0;
+
+    function pageUp(){
+	//add 10 more points
+	if(count < markersH.length){ //if count reach max, don't do anything
+		//take away old markers
+		if(count > 0){ //only if there are others
+		    var l = 10;
+		    if(count%10) l = count%10;
+		    for(var i=count-1;i>=count-l;i--){
+			markersH[i].marker.setVisible(false);
+			console.log(i);
+		    }
+		    
+		}
+		//add new markers
+		for(var i=0;i<10&&count<=markersH.length;i++){
+		    markersH[count].marker.setVisible(true);
+		    count++;
+	 	}
+		setText();
+		first = new Date(markersH[count-10].data.createddate); last = new Date(markersH[count-1].data.createddate);
+		document.getElementById('updates').innerHTML = '<mark>'+first.toDateString()+' '+first.toLocaleTimeString() + '</mark> to <mark>'+ last.toDateString()+' '+last.toLocaleTimeString()+'</mark>';
+	}
+    }
+
+    function pageDown(){
+	if(count > 0){ //perform only if there are markers visible
+	    //take away old markers
+	    var l = Math.floor((count-1)/10)*10;
+	    for(count;count>l;count--){ // count lowered to next multiple of 10    
+		markersH[count-1].marker.setVisible(false);
+	    };
+	    document.getElementById('text').innerHTML = '';
+	    document.getElementById('updates').innerHTML = '';
+	    //if count not 0, provide older markers
+	    if(count > 0){
+		for(var i=1;i<=10;i++){
+		    markersH[count-i].marker.setVisible(true);
+		}
+		setText();
+		first = new Date(markersH[count-10].data.createddate); last = new Date(markersH[count-1].data.createddate);
+		document.getElementById('updates').innerHTML = '<mark>'+first.toDateString()+' '+first.toLocaleTimeString() + '</mark> to <mark>'+ last.toDateString()+' '+last.toLocaleTimeString()+'</mark>';
+	    }
+	}
+    }
+
+
+    function setText(){
+        var content = "";
+	for(var i=1;i<=10;i++){
+	    content += markersH[count-i].contentString;
+	}
+        document.getElementById('text').innerHTML = content;
+    }
+
+
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALZgGws3IIr5O3LcWZTCD3W3IKa0l6YrI">
+</script>
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9"><img src="cci-logo.png"></div>
+        <div class="col-md-3" style="padding-top:17px"><img src="i3_logo.png"></div>
+    </div>
+    <h2>Latest Homeless Encampment Updates in Los Angeles</h2>
+    <button id="down" type="button" onclick="pageDown();" disabled="true" > < </button>
+    <button id="up" type="button" onclick="pageUp();" disabled="true"> > </button>
+
+     <h3 id="updates"></h3>
+     <div class="row">    	
+	     <div class="col-md-9">
+		<div id="map"></div>
+	     </div>
+	     <div class="col-md-3">
+	   	 <div id="text" style="overflow-y:scroll; height:400px; padding:10px 10px 10px 10px"> </div>
+	     </div>
+     </div>
+</div>
+
+<div style="height:100px"></div>
+
+
+</body>
+</html>

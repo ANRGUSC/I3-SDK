@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <script src="arrays.js"></script>
+    <script src="heatmap.js"></script>
+    <!--<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALZgGws3IIr5O3LcWZTCD3W3IKa0l6YrI&callback=initMap">
+    </script>-->
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALZgGws3IIr5O3LcWZTCD3W3IKa0l6YrI&libraries=visualization">
+    </script>
+    <script src="mqttws31.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+       #map {
+        height: 660px;
+        width: 100%
+       }
+       h2 {
+ 	font-family: "Times New Roman", Georgia, Serif;
+       }
+       p.textBox{
+	border-style: solid;
+	}
+
+    </style>
+  </head>
+  <body >
+    <div style="height:60px"></div>
+<div class="container">
+    <!--<div class="row">
+        <div class="col-md-9"><img src="cci-logo.png"></div>
+        <div class="col-md-3" style="padding-top:17px"><img src="i3_logo.png"></div>
+    </div>-->
+    <div class="row">
+        <!--<div class="col-md-1"><img src="i3_logo.jpeg"></div>-->
+        <div class="col-md-6"><h3 id="heading">Updates from Los Angeles Open Data</h3></div>
+        <div class="col-md-3"></div>
+	    <div class="col-md-3"><h3 id="time">time</h3></div>
+    </div>
+</div>
+
+<div class="container">
+<div class="row">
+
+	<div id="map"></div>
+
+</div>
+</div>
+<div style="height:500px"></div>
+
+  </body>
+</html>
