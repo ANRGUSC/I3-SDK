@@ -1,0 +1,7 @@
+{"items":
+[
+  {
+    "trip_id": "47004053",
+    "block_id":  "7040200",
+    "seconds": 225.0,
+    "is_departing": false, "minutes": 3.0, "run_id": "704_165_0", "route_id": "704"}, {"trip_id": "47003942", "block_id": "7044300", "seconds": 1316.0, "is_departing": false, "minutes": 21.0, "run_id": "704_165_0", "route_id": "704"}, {"trip_id": "47003943", "block_id": "7047400", "seconds": 2369.0, "is_departing": false, "minutes": 39.0, "run_id": "704_165_0", "route_id": "704"}, {"trip_id": "47003944", "block_id": "7044400", "seconds": 3251.0, "is_departing": false, "minutes": 54.0, "run_id": "704_165_0", "route_id": "704"}, {"trip_id": "47003945", "block_id": "7047200", "seconds": 4396.0, "is_departing": false, "minutes": 73.0, "run_id": "704_165_0", "route_id": "704"}, {"trip_id": "47005886", "block_id": "0047200", "seconds": 189.0, "is_departing": false, "minutes": 3.0, "run_id": "4_274_0", "route_id": "4"}, {"trip_id": "47005882", "block_id": "0047400", "seconds": 1009.0, "is_departing": false, "minutes": 16.0, "run_id": "4_274_0", "route_id": "4"}, {"trip_id": "47005887", "block_id": "0045700", "seconds": 1930.0, "is_departing": false, "minutes": 32.0, "run_id": "4_274_0", "route_id": "4"}, {"trip_id": "47005908", "block_id": "0047300", "seconds": 2687.0, "is_departing": false, "minutes": 44.0, "run_id": "4_274_0", "route_id": "4"}, {"trip_id": "47005904", "block_id": "0047602", "seconds": 3897.0, "is_departing": false, "minutes": 64.0, "run_id": "4_274_0", "route_id": "4"}]}

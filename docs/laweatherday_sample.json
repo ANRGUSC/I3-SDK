@@ -1,0 +1,275 @@
+{
+    "@context": [
+        "https://raw.githubusercontent.com/geojson/geojson-ld/master/contexts/geojson-base.jsonld",
+        {
+            "wx": "https://api.weather.gov/ontology#",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "Feature",
+    "geometry": {
+        "type": "GeometryCollection",
+        "geometries": [
+            {
+                "type": "Point",
+                "coordinates": [
+                    -118.2461557,
+                    34.053474299999998
+                ]
+            },
+            {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -118.2618399,
+                            34.062663000000001
+                        ],
+                        [
+                            -118.25719459999999,
+                            34.040450100000001
+                        ],
+                        [
+                            -118.23047389999999,
+                            34.044283800000002
+                        ],
+                        [
+                            -118.23511409999999,
+                            34.066497300000002
+                        ],
+                        [
+                            -118.2618399,
+                            34.062663000000001
+                        ]
+                    ]
+                ]
+            }
+        ]
+    },
+    "properties": {
+        "updated": "2019-06-03T17:08:12+00:00",
+        "units": "us",
+        "forecastGenerator": "BaselineForecastGenerator",
+        "generatedAt": "2019-06-03T19:00:30+00:00",
+        "updateTime": "2019-06-03T17:08:12+00:00",
+        "validTimes": "2019-06-03T11:00:00+00:00/P8DT2H",
+        "elevation": {
+            "value": 114.90960000000001,
+            "unitCode": "unit:m"
+        },
+        "periods": [
+            {
+                "number": 1,
+                "name": "This Afternoon",
+                "startTime": "2019-06-03T12:00:00-07:00",
+                "endTime": "2019-06-03T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 72,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "5 to 10 mph",
+                "windDirection": "NW",
+                "icon": "https://api.weather.gov/icons/land/day/few?size=medium",
+                "shortForecast": "Sunny",
+                "detailedForecast": "Sunny, with a high near 72. Northwest wind 5 to 10 mph."
+            },
+            {
+                "number": 2,
+                "name": "Tonight",
+                "startTime": "2019-06-03T18:00:00-07:00",
+                "endTime": "2019-06-04T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 59,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "S",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 59. South wind 0 to 10 mph."
+            },
+            {
+                "number": 3,
+                "name": "Tuesday",
+                "startTime": "2019-06-04T06:00:00-07:00",
+                "endTime": "2019-06-04T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 71,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "SW",
+                "icon": "https://api.weather.gov/icons/land/day/fog/sct?size=medium",
+                "shortForecast": "Patchy Fog then Mostly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Mostly sunny, with a high near 71. Southwest wind 0 to 10 mph."
+            },
+            {
+                "number": 4,
+                "name": "Tuesday Night",
+                "startTime": "2019-06-04T18:00:00-07:00",
+                "endTime": "2019-06-05T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 61,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 5 mph",
+                "windDirection": "E",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 61. East wind 0 to 5 mph."
+            },
+            {
+                "number": 5,
+                "name": "Wednesday",
+                "startTime": "2019-06-05T06:00:00-07:00",
+                "endTime": "2019-06-05T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 74,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 5 mph",
+                "windDirection": "NNE",
+                "icon": "https://api.weather.gov/icons/land/day/fog/sct?size=medium",
+                "shortForecast": "Patchy Fog then Mostly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Mostly sunny, with a high near 74. North northeast wind 0 to 5 mph."
+            },
+            {
+                "number": 6,
+                "name": "Wednesday Night",
+                "startTime": "2019-06-05T18:00:00-07:00",
+                "endTime": "2019-06-06T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 62,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 5 mph",
+                "windDirection": "SSW",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 62."
+            },
+            {
+                "number": 7,
+                "name": "Thursday",
+                "startTime": "2019-06-06T06:00:00-07:00",
+                "endTime": "2019-06-06T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 73,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "SSW",
+                "icon": "https://api.weather.gov/icons/land/day/fog/sct?size=medium",
+                "shortForecast": "Patchy Fog then Mostly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Mostly sunny, with a high near 73."
+            },
+            {
+                "number": 8,
+                "name": "Thursday Night",
+                "startTime": "2019-06-06T18:00:00-07:00",
+                "endTime": "2019-06-07T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 60,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "5 to 10 mph",
+                "windDirection": "S",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 60."
+            },
+            {
+                "number": 9,
+                "name": "Friday",
+                "startTime": "2019-06-07T06:00:00-07:00",
+                "endTime": "2019-06-07T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 71,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "5 to 10 mph",
+                "windDirection": "S",
+                "icon": "https://api.weather.gov/icons/land/day/fog/bkn?size=medium",
+                "shortForecast": "Patchy Fog then Partly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Partly sunny, with a high near 71."
+            },
+            {
+                "number": 10,
+                "name": "Friday Night",
+                "startTime": "2019-06-07T18:00:00-07:00",
+                "endTime": "2019-06-08T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 59,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "5 to 10 mph",
+                "windDirection": "SSE",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 59."
+            },
+            {
+                "number": 11,
+                "name": "Saturday",
+                "startTime": "2019-06-08T06:00:00-07:00",
+                "endTime": "2019-06-08T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 78,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "5 to 10 mph",
+                "windDirection": "SSW",
+                "icon": "https://api.weather.gov/icons/land/day/fog/bkn?size=medium",
+                "shortForecast": "Patchy Fog then Partly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Partly sunny, with a high near 78."
+            },
+            {
+                "number": 12,
+                "name": "Saturday Night",
+                "startTime": "2019-06-08T18:00:00-07:00",
+                "endTime": "2019-06-09T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 60,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "S",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 60."
+            },
+            {
+                "number": 13,
+                "name": "Sunday",
+                "startTime": "2019-06-09T06:00:00-07:00",
+                "endTime": "2019-06-09T18:00:00-07:00",
+                "isDaytime": true,
+                "temperature": 80,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "S",
+                "icon": "https://api.weather.gov/icons/land/day/fog/bkn?size=medium",
+                "shortForecast": "Patchy Fog then Partly Sunny",
+                "detailedForecast": "Patchy fog before 11am. Partly sunny, with a high near 80."
+            },
+            {
+                "number": 14,
+                "name": "Sunday Night",
+                "startTime": "2019-06-09T18:00:00-07:00",
+                "endTime": "2019-06-10T06:00:00-07:00",
+                "isDaytime": false,
+                "temperature": 61,
+                "temperatureUnit": "F",
+                "temperatureTrend": null,
+                "windSpeed": "0 to 10 mph",
+                "windDirection": "ESE",
+                "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+                "shortForecast": "Patchy Fog",
+                "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 61."
+            }
+        ]
+    }
+}
