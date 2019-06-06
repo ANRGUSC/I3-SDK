@@ -1,0 +1,72 @@
+
+#map {
+    height: 600px;
+    width: 100%;
+    position: absolute;
+}
+
+body {
+   font-family: Ariel, Helvetica, sans-serif;
+}
+
+#toggle {
+    margin-top: 20px;
+    display:none; 
+    background:#eee;
+    width:100%; 
+    padding:20px;
+}
+
+.dropdown {
+    margin-top: 10px;
+}    
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  /*background-image: url('/css/searchicon.png');*/
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+}
+
+#myUL li a {
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 9px;
+  text-decoration: none;
+  font-size: 12px;
+  color: black;
+  display: block;
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+        
