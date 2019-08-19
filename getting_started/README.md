@@ -1,6 +1,6 @@
 For version v0 :
 
-For creating an account, product and even buying a product please follow the documentation at https://anrgusc.github.io/iotm/I3_API_Documentation.pdf
+For creating an account, product and even buying a product please follow the documentation at https://github.com/ANRGUSC/I3-SDK/blob/master/docs/I3_API_Documentation.pdf
 
 Please modify the following script files to point at the I3 running instance along with the credentials.
 
