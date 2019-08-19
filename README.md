@@ -5,7 +5,6 @@ For more information on I3, please visit https://i3.usc.edu/
 
 It is currently designed to show how to send data to and receive data from I3 v0. It is based on Eclipse Paho MQTT client SDK. 
 
-The I3 SDK has been developed by researchers at the Center for Cyber-Physical Systems and the Internet of Things, Viterbi School of Engineering, University of Southern California. 
+This I3 SDK has been initially developed by researchers at the Center for Cyber-Physical Systems and the Internet of Things, Viterbi School of Engineering, University of Southern California. 
 
 
-First released: August 19, 2019.
