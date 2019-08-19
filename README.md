@@ -1,4 +1,4 @@
-# I3-SDK
+# I3 v0 SDK
 
 This Software Development Kit provides sample scripts that can be used by publishers and subscribers on the I3 marketplace.
 For more information on I3, please visit https://i3.usc.edu/
