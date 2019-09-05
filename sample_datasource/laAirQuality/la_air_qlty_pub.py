@@ -7,6 +7,7 @@ import paho.mqtt.client as mqtt
 import time
 import requests
 import json
+import os
 
 def on_connect(client, userdata, flags, rc):
     """print out result code when connecting with the broker
@@ -45,19 +46,34 @@ if __name__ == '__main__':
 
     #TODO: modify topic from email message
 
-    account = 'CCI'
-    topic = ['laairquality']
-    pw = 'azbpqe'
+    clientId = 'Default'
+    account = 'Default'
+    topic = ['Default']
+    pw = 'Default'
+    port = 1883
+    host = 'Default'
 
     try:
+        if os.path.exists('config.ini'):
+            fread = open('config.ini', 'r')
+            host = str(fread.read()).split("=")[1]
+            print "Host :", host
+            fread.close()
+        if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default':
+            print "ERROR: Check host, topic, subscriber and password values"
+            print "The subscriber is the username that was used to purchase the product"
+            print "The topic is the product which is purchased from the I3 Data market place"
+            print "The password is the system generated password when the product is purchased"
+            raise Exception(" Default values not changed ")
         pub_client = mqtt.Client(account)
         pub_client.on_connect = on_connect
         pub_client.on_message = on_message
         pub_client.username_pw_set(account, pw)
-        pub_client.connect('localhost', 1883)      #connect to broker
+        pub_client.connect(host, port)      #connect to broker
     
     except Exception as e:
         print "Exception" + str(e)
+        exit(0)
 
     #pub_client.subscribe(topic)
     #pub_client.loop_start()
