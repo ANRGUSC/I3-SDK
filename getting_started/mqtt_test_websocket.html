@@ -5,13 +5,16 @@
 <script type="text/javascript" language="javascript">
 var mqtt;
 var reconnectTime = 2000;
-var host = "18.217.227.236";
+var host = "Default";
 var port = 9010;
+var topic = "Default";
+var subscriber = "Default";
+var password = "Default";
 
 function onConnect(){
 console.log("Connected ");
 message = new Paho.MQTT.Message("Hello Weeb Socket");
-message.destinationName="laweatherday";
+message.destinationName=topic;
 mqtt.send(message);
 }
 
@@ -21,10 +24,21 @@ console.log("Failed to connect "+ res.errorMessage);
 }
 
 function MQTTconnect(){
-console.log("Connecting to "+ host + " port " + port);
-mqtt = new Paho.MQTT.Client(host,port,"Websocket");
-var options = {timeout: 30, userName:"CCI", password:"ddqqh6", onSuccess: onConnect, onFailure: onFail,};
-mqtt.connect(options);
+if(host == "Default" || topic == "Default" || subscriber == "Default" || password == "Default"){
+    window.alert("ERROR: Check host, topic, subscriber and password values");
+    console.error("Default values set needs to be changed");
+    console.error("Check host, topic, subscriber, password fields");
+    console.log("The subscriber is the username that was used to purchase the product");
+    console.log("The topic is the product which is purchased from the I3 Data market place");
+    console.log("The password is the system generated password when the product is purchased");
+    console.log("Also remember that port should always be type Number and not String type");
+}
+else {
+    console.log("Connecting to "+ host + " port " + port);
+    mqtt = new Paho.MQTT.Client(host,port,"Websocket");
+    var options = {timeout: 30, userName: subscriber, password: password, onSuccess: onConnect, onFailure: onFail,};
+    mqtt.connect(options);
+}
 }
 </script>
 </head>
