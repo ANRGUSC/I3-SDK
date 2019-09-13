@@ -22,9 +22,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     global logfile
-    
-    print ("Message received  " + msg.payload)
-    
+    print("message received  "  ,str(message.payload.decode("utf-8")))
+
     # if not logfile is None:
     #     logfile.write(str(time.time()) + ',' + msg.payload + ',' + msg.topic + '\n')
     #     logfile.flush()
@@ -38,9 +37,9 @@ def test_sub(logfilename=None):
     # clientid : this must be unique else the connecjartion would be lost
 
     clientId = 'spencer_test_sub'
-    account = 'SpencerMcD'
+    account = 'smcd253'
     topic = ['test_i3_sdk']
-    pw = 'y1ycmu'
+    pw = 'vd2i0e'
     port = 1883
     host = 'Default'
 

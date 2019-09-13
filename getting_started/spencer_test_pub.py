@@ -24,10 +24,7 @@ def on_connect(client, userdata, flags, rc):
     Returns:
 
     """
-
-    m="Connected flags"+str(flags)+"result code "\
-    +str(rc)+"client1_id  "+str(client)
-    print(m)
+    print("connected")
 
 
 
