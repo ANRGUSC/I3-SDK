@@ -68,7 +68,8 @@ I3_RESULT i3_client_connect(I3_CLIENT_HANDLE i3_client_handle);
 
 - function to publish data to topic
 ```C
-I3_RESULT i3_client_publish(I3_CLIENT_HANDLE i3_client_handle, const char* topic, const uint8_t* data);
+I3_RESULT i3_client_publish(I3_CLIENT_HANDLE i3_client_handle, const char* topic, const uint8_t* data,
+            void* message);
 ```
 
 - function to subscribe to topic
