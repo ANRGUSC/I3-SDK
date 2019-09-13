@@ -14,12 +14,15 @@ import os
 
 def on_connect(client, userdata, flags, rc):
     """print out result code when connecting with the broker
+
     Args:
         client: publisher
         userdata:
         flags:
         rc: result code
+
     Returns:
+
     """
 
     m="Connected flags"+str(flags)+"result code "\
@@ -30,11 +33,14 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client1, userdata, message):
     """print out recieved message
+
     Args:
         client1: publisher
         userdata:
         message: recieved data
+
     Returns:
+
     """
     print("message received  "  ,str(message.payload.decode("utf-8")))
 
@@ -49,10 +55,10 @@ if __name__ == '__main__':
     # topic : the product that is bought
     # clientid : this must be unique else the connection would be lost
 
-    clientId = 'Default'
-    account = 'Default'
-    topic = ['Default']
-    pw = 'Default'
+    clientId = 'spencer_test_pub'
+    account = 'SpencerMcD'
+    topic = ['test_i3_sdk']
+    pw = 'y1ycmu'
     port = 1883
     host = 'Default'
 
@@ -60,13 +66,13 @@ if __name__ == '__main__':
         if os.path.exists('config.ini') :
             fread = open('config.ini','r')
             host= str(fread.read()).split("=")[1]
-            print "Host :", host
+            print ("Host :", host)
             fread.close()
         if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default' :
-            print "ERROR: Check host, topic, subscriber and password values"
-            print "The subscriber is the username that was used to purchase the product"
-            print "The topic is the product which is purchased from the I3 Data market place"
-            print "The password is the system generated password when the product is purchased"
+            print ("ERROR: Check host, topic, subscriber and password values")
+            print ("The subscriber is the username that was used to purchase the product")
+            print ("The topic is the product which is purchased from the I3 Data market place")
+            print ("The password is the system generated password when the product is purchased")
             raise Exception(" Default values not changed ")
 
         pub_client = mqtt.Client(clientId)
@@ -76,18 +82,20 @@ if __name__ == '__main__':
         pub_client.connect(host, port)      #connect to broker
     
     except Exception as e:
-        print "Exception" + str(e)
+        print ("Exception" + str(e))
         exit(-1)
 
+    print("topic = " + topic[0])
     #pub_client.subscribe(topic)
     #pub_client.loop_start()
     # Update the message to be published.
     count = 0
     while count < 2:
         count += 1
+        
         pub_client.publish(topic[0], 'Hello World testing')
         #pub_client.publish(topic[1], 'Hello World')
         time.sleep(2)
 
     pub_client.disconnect()
-    
+
