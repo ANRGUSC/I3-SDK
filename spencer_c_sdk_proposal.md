@@ -63,7 +63,7 @@ I3_RESULT i3_client_destroy(I3_CLIENT_HANDLE i3_client_handle);
 
 - function to establish mqtt connection with i3
 ```C
-I3_RESULT i3_client_connect(I3_CLIENT_HANDLE i3_client_handle);
+I3_RESULT i3_client_connect(I3_CLIENT_HANDLE i3_client_handle, void* user_connect_callback);
 ```
 
 - function to publish data to topic
@@ -74,8 +74,8 @@ I3_RESULT i3_client_publish(I3_CLIENT_HANDLE i3_client_handle, const char* topic
 
 - function to subscribe to topic
 ```C
-I3_RESULT i3_client_subscribe(I3_CLIENT_HANDLE i3_client_handle, const char* topic, 
-            void* message_receive_callback);
+I3_RESULT i3_client_subscribe(I3_CLIENT_HANDLE i3_client_handle, 
+    const char* topic, void* message_receive_callback);
 ```
 
 ## Coding Conventions
