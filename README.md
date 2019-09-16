@@ -14,6 +14,6 @@ This I3 SDK has been initially developed by researchers at the Center for Cyber-
 [Contribution guidelines for this project](CONTRIBUTING.md)
 
 ## Code of Conduct
-[Please refer](CODE_OF_CONDUCT.md)
+[Please refer the code of confuct to maintain a user and developer friendly environment](CODE_OF_CONDUCT.md)
 
 
