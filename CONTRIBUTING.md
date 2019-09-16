@@ -174,7 +174,7 @@ Please open an issue on `I3` if you have suggestions for new labels.
 #### Type of Issue and Issue State
 
 | Label name | `I3` | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- | 
 | `enhancement` | [search][search-i3-label-enhancement] | Feature requests. |
 | `bug` | [search][search-i3-label-bug] | Confirmed bugs or reports that are very likely to be bugs. |
 | `question` | [search][search-i3-label-question] | Questions more than bug reports or feature requests (e.g. how do I do X). |
@@ -192,7 +192,7 @@ Please open an issue on `I3` if you have suggestions for new labels.
 #### Pull Request Labels
 
 | Label name | I3 SDK :mag_right: | Description
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | `work-in-progress` | [search][search-i3-label-work-in-progress] | Pull requests which are still being worked on, more changes will follow. |
 | `needs-review` | [search][search-i3-label-needs-review] | Pull requests which need code review, and approval from maintainers or core team. |
 | `under-review` | [search][search-i3-label-under-review] | [search][search-i3-label-under-review] | Pull requests being reviewed by maintainers or core team. |
