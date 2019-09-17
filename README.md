@@ -11,7 +11,7 @@ To begin, see the getting_started folder.
 
 ## Contributors 
 This I3 SDK has been initially developed by researchers at the [Center for Cyber-Physical Systems and the Internet of Things](http://cci.usc.edu/), Viterbi School of Engineering, University of Southern California. 
-[To contribute to the project please review contribution guidelines for this project](CONTRIBUTING.md)
+[To contribute to the project, please review the contribution guidelines](CONTRIBUTING.md).
 
 ## Code of Conduct
 [Please refer the code of confuct to maintain a user and developer friendly environment](CODE_OF_CONDUCT.md)
