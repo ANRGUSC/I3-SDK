@@ -10,7 +10,7 @@ It is currently designed to show how to send data to and receive data from I3 v0
 To begin, see the getting_started folder. 
 
 ## Contributors 
-This I3 SDK has been initially developed by researchers at the Center for Cyber-Physical Systems and the Internet of Things, Viterbi School of Engineering, University of Southern California. 
+This I3 SDK has been initially developed by researchers at the [Center for Cyber-Physical Systems and the Internet of Things](http://cci.usc.edu/), Viterbi School of Engineering, University of Southern California. 
 [Contribution guidelines for this project](CONTRIBUTING.md)
 
 ## Code of Conduct
