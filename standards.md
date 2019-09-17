@@ -6,4 +6,5 @@
 ## error logging
 - Which APIs do we want to error log?
     * connect
+        * 
     * user config
