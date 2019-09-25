@@ -22,7 +22,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     global logfile
     
-    print "Message received  " + msg.payload
+    print("Message received  " + msg.payload)
     
     # if not logfile is None:
     #     logfile.write(str(time.time()) + ',' + msg.payload + ',' + msg.topic + '\n')
@@ -47,13 +47,13 @@ def test_sub(logfilename=None):
         if os.path.exists('config.ini') :
             fread = open('config.ini','r')
             host= str(fread.read()).split("=")[1]
-            print "Host :", host
+            print("Host :" + host)
             fread.close()
         if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default' :
-            print "ERROR: Check host, topic, subscriber and password values"
-            print "The subscriber is the username that was used to purchase the product"
-            print "The topic is the product which is purchased from the I3 Data market place"
-            print "The password is the system generated password when the product is purchased"
+            print("ERROR: Check host, topic, subscriber and password values")
+            print("The subscriber is the username that was used to purchase the product")
+            print("The topic is the product which is purchased from the I3 Data market place")
+            print("The password is the system generated password when the product is purchased")
             raise Exception(" Default values not changed ")
 
         sub_client = mqtt.Client(clientId)
@@ -63,10 +63,10 @@ def test_sub(logfilename=None):
         sub_client.connect(host, port, 60) #connect to broker
 
     except Exception as e:
-        print "Exception" + str(e)
+        print("Exception" + str(e))
         exit(-1)
 
-    sub_client.subscribe(topic)
+    sub_client.subscribe(topic[0])
     
     if not logfilename is None:
         logfile = open(logfilename, 'w')

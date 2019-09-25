@@ -60,13 +60,13 @@ if __name__ == '__main__':
         if os.path.exists('config.ini') :
             fread = open('config.ini','r')
             host= str(fread.read()).split("=")[1]
-            print "Host :", host
+            print("Host : " + host)
             fread.close()
         if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default' :
-            print "ERROR: Check host, topic, subscriber and password values"
-            print "The subscriber is the username that was used to purchase the product"
-            print "The topic is the product which is purchased from the I3 Data market place"
-            print "The password is the system generated password when the product is purchased"
+            print("ERROR: Check host, topic, subscriber and password values")
+            print("The subscriber is the username that was used to purchase the product")
+            print("The topic is the product which is purchased from the I3 Data market place")
+            print("The password is the system generated password when the product is purchased")
             raise Exception(" Default values not changed ")
 
         pub_client = mqtt.Client(clientId)
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         pub_client.connect(host, port)      #connect to broker
     
     except Exception as e:
-        print "Exception" + str(e)
+        print("Exception" + str(e))
         exit(-1)
 
     #pub_client.subscribe(topic)
