@@ -28,15 +28,15 @@ def on_connect(client, userdata, flags, rc):
 
 
 
-def on_message(client1, userdata, message):
+def on_message(client, userdata, message):
     """print out recieved message
     Args:
-        client1: publisher
+        client: publisher
         userdata:
         message: recieved data
     Returns:
     """
-    print("message received  "  ,str(message.payload.decode("utf-8")))
+    print("Message received  ", str(message.payload.decode("utf-8")))
 
 
 if __name__ == '__main__':
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         if os.path.exists('config.ini') :
             fread = open('config.ini','r')
             host= str(fread.read()).split("=")[1]
-            print("Host : " + host)
+            print("Host : ", host)
             fread.close()
         if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default' :
             print("ERROR: Check host, topic, subscriber and password values")
