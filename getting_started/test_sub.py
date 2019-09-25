@@ -19,13 +19,20 @@ def on_connect(client, userdata, flags, rc):
     + str(rc) + " Client_id  " + str(client)
     print(m)
 
-def on_message(client, userdata, msg):
+def on_message(client, userdata, message):
     global logfile
     
-    print("Message received  " + msg.payload)
+    """print out recieved message
+    Args:
+        client: publisher
+        userdata:
+        message: recieved data
+    Returns:
+    """
+    print("Message received  ", str(message.payload.decode("utf-8")))
     
     # if not logfile is None:
-    #     logfile.write(str(time.time()) + ',' + msg.payload + ',' + msg.topic + '\n')
+    #     logfile.write(str(time.time()) + ',' + str(message.payload.decode("utf-8")) + ',' + msg.topic + '\n')
     #     logfile.flush()
 
 def test_sub(logfilename=None):   
@@ -47,7 +54,7 @@ def test_sub(logfilename=None):
         if os.path.exists('config.ini') :
             fread = open('config.ini','r')
             host= str(fread.read()).split("=")[1]
-            print("Host :" + host)
+            print("Host :", host)
             fread.close()
         if host == 'Default' or port == 'Default' or topic == 'Default' or account == 'Default' or clientId == 'Default' :
             print("ERROR: Check host, topic, subscriber and password values")
