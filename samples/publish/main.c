@@ -19,9 +19,19 @@
 #include <string.h>
 #include "MQTTClient.h"
 
-#define ADDRESS     "tcp://localhost:1883"
-#define CLIENTID    "ExampleClientPub"
-#define TOPIC       "MQTT Examples"
+/**
+ * below is the format to be used when publishing to an I3 product (topic)
+#define ADDRESS     "broker_address:1883"
+#define ACCOUNT     "my_account_name"
+#define CLIENTID    "my_account_name$my_hub_name$my_device_name"
+#define TOPIC       "my_account_name/my_hub_name/my_product_name"
+#define PASSWORD    "my_account_password" (find in notifications after subscribing to topic)
+*/
+#define ADDRESS     "18.219.4.146:1883"
+#define CLIENTID    "SpencerMcD$testCSDK$testC1"
+#define TOPIC       "SpencerMcD/testCSDK/testProd1"
+#define ACCOUNT     "SpencerMcD"
+#define PASSWORD    "1234567"
 #define PAYLOAD     "Hello World!"
 #define QOS         1
 #define TIMEOUT     10000L
@@ -33,11 +43,15 @@ int main(int argc, char* argv[])
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
     int rc;
-
-    MQTTClient_create(&client, ADDRESS, CLIENTID,
+    
+    // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
+    MQTTClient_create(&client, ADDRESS, ACCOUNT,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
+    // note: we will be setting the username to CLIENTID (opposite of subscribe)
+    conn_opts.username = CLIENTID;
+    conn_opts.password = PASSWORD;
 
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {

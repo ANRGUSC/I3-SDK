@@ -25,13 +25,13 @@
 #define ACCOUNT     "my_account_name"
 #define CLIENTID    "my_account_name$my_hub_name$my_device_name"
 #define TOPIC       "topic_owner_account_name/topic_owner_hub_name/product_name"
-#define PASSWORD    "generated_api_key" (find in notificatiosn after subscribing to topic)
+#define PASSWORD    "generated_api_key" (find in notifications after subscribing to topic)
 */
-#define ADDRESS     "broker_address:1883"
-#define ACCOUNT     "my_account_name"
-#define CLIENTID    "my_account_name$my_hub_name$my_device_name"
-#define TOPIC       "topic_owner_account_name/topic_owner_hub_name/product_name"
-#define PASSWORD    "generated_api_key"
+#define ADDRESS     "18.219.4.146:1883"
+#define CLIENTID    "shmcdono$testCSub$testCSubClient"
+#define TOPIC       "SpencerMcD/testCSDK/testProd1"
+#define ACCOUNT     "shmcdono"
+#define PASSWORD    "7k0m4e3qt6kl"
 #define QOS         1
 #define TIMEOUT     10000L
 
@@ -76,11 +76,12 @@ int main(int argc, char* argv[])
     int rc;
     int ch;
 
+    // note: we will be creating the client with the CLIENTID (opposite of publish)
     MQTTClient_create(&client, ADDRESS, CLIENTID,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
-    //set username and password for connection
+    // note: we will be setting the username to ACCOUNT (opposite of publish)
     conn_opts.username = ACCOUNT;
     conn_opts.password = PASSWORD;
 
