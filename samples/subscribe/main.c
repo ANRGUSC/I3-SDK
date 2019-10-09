@@ -19,10 +19,19 @@
 #include <string.h>
 #include "MQTTClient.h"
 
-#define ADDRESS     "tcp://localhost:1883"
-#define CLIENTID    "ExampleClientSub"
-#define TOPIC       "MQTT Examples"
-#define PAYLOAD     "Hello World!"
+/**
+ * below is the format to be used when subscribing to an I3 product (topic)
+#define ADDRESS     "broker_address:1883"
+#define ACCOUNT     "my_account_name"
+#define CLIENTID    "my_account_name$my_hub_name$my_device_name"
+#define TOPIC       "topic_owner_account_name/topic_owner_hub_name/product_name"
+#define PASSWORD    "generated_api_key" (find in notificatiosn after subscribing to topic)
+*/
+#define ADDRESS     "broker_address:1883"
+#define ACCOUNT     "my_account_name"
+#define CLIENTID    "my_account_name$my_hub_name$my_device_name"
+#define TOPIC       "topic_owner_account_name/topic_owner_hub_name/product_name"
+#define PASSWORD    "generated_api_key"
 #define QOS         1
 #define TIMEOUT     10000L
 
@@ -71,6 +80,9 @@ int main(int argc, char* argv[])
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
+    //set username and password for connection
+    conn_opts.username = ACCOUNT;
+    conn_opts.password = PASSWORD;
 
     MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
 
