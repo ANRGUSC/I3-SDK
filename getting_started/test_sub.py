@@ -38,15 +38,24 @@ def on_message(client, userdata, message):
 def test_sub(logfilename=None):   
     global logfile
 
+    #TODO: modify clientID
+    #TODO: modify account
+    #TODO: modify topic
+    #TODO: modify pw
+    # clientid : your full device ID string
     # account : username created on I3 instance
-    # pw : system generated password on the notification bell
-    # topic : the product that is bought
-    # clientid : this must be unique else the connecjartion would be lost
+    # topic : the product that is has been bought (full string)
+    # pw : system generated password under the notification bell
+    # e.g. as follows:
+        # clientId = 'my_account_name$my_hub_name$my_device_name'
+        # account = 'my_account_name'
+        # topic = ['topic_owner_account_name/topic_owner_hub_name/product_name']
+        # pw = 'generated_api_key' (find in notifications after subscribing to topic)'
 
-    clientId = 'shmcdono$testCSub$testCSubClient'
-    account = 'shmcdono'
-    topic = ['SpencerMcD/testCSDK/testProd1']
-    pw = '7k0m4e3qt6kl'
+    clientId = 'Default'
+    account = 'Default'
+    topic = ['Default']
+    pw = 'Default'
     port = 1883
     host = 'Default'
 

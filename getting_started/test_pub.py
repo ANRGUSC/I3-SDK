@@ -41,18 +41,24 @@ def on_message(client, userdata, message):
 
 if __name__ == '__main__':
 
-    #TODO: modify account / username
+    #TODO: modify clientID
+    #TODO: modify account
     #TODO: modify topic
-    #TODO: modify system generated password
+    #TODO: modify pw
+    # clientid : your full device ID string
     # account : username created on I3 instance
-    # pw : system generated password on the notification bell
-    # topic : the product that is bought
-    # clientid : this must be unique else the connection would be lost
+    # topic : the product that is being published to
+    # pw : I3 account password
+    # e.g. as follows:
+        # clientId = 'my_account_name$my_hub_name$my_device_name'
+        # account = 'my_account_name'
+        # topic = ['my_account_name/my_hub_name/my_product_name']
+        # pw = 'my_account_password'
 
-    clientId = 'SpencerMcD$testCSDK$testC1'
-    account = 'SpencerMcD'
-    topic = ['SpencerMcD/testCSDK/testProd1']
-    pw = '1234567'
+    clientId = 'Default'
+    account = 'Default'
+    topic = ['Default']
+    pw = 'Default'
     port = 1883
     host = 'Default'
 
