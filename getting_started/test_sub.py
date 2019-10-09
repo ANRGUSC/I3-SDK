@@ -43,10 +43,10 @@ def test_sub(logfilename=None):
     # topic : the product that is bought
     # clientid : this must be unique else the connecjartion would be lost
 
-    clientId = 'Default'
-    account = 'Default'
-    topic = ['Default']
-    pw = 'Default'
+    clientId = 'shmcdono$testCSub$testCSubClient'
+    account = 'shmcdono'
+    topic = ['SpencerMcD/testCSDK/testProd1']
+    pw = '7k0m4e3qt6kl'
     port = 1883
     host = 'Default'
 

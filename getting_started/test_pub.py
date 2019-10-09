@@ -49,10 +49,10 @@ if __name__ == '__main__':
     # topic : the product that is bought
     # clientid : this must be unique else the connection would be lost
 
-    clientId = 'Default'
-    account = 'Default'
-    topic = ['Default']
-    pw = 'Default'
+    clientId = 'SpencerMcD$testCSDK$testC1'
+    account = 'SpencerMcD'
+    topic = ['SpencerMcD/testCSDK/testProd1']
+    pw = '1234567'
     port = 1883
     host = 'Default'
 
@@ -69,10 +69,10 @@ if __name__ == '__main__':
             print("The password is the system generated password when the product is purchased")
             raise Exception(" Default values not changed ")
 
-        pub_client = mqtt.Client(clientId)
+        pub_client = mqtt.Client(account)
         pub_client.on_connect = on_connect
         pub_client.on_message = on_message
-        pub_client.username_pw_set(account, pw)
+        pub_client.username_pw_set(clientId, pw)
         pub_client.connect(host, port)      #connect to broker
     
     except Exception as e:
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     #pub_client.loop_start()
     # Update the message to be published.
     count = 0
-    while count < 2:
+    while count < 1000:
         count += 1
         pub_client.publish(topic[0], 'Hello World testing')
         #pub_client.publish(topic[1], 'Hello World')
