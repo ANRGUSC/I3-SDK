@@ -25,7 +25,7 @@
 #define ACCOUNT     "my_account_name"
 #define CLIENTID    "my_account_name$my_hub_name$my_device_name"
 #define TOPIC       "my_account_name/my_hub_name/my_product_name"
-#define PASSWORD    "my_account_password" (find in notifications after subscribing to topic)
+#define PASSWORD    "my_account_password"
 */
 #define ADDRESS     "18.219.4.146:1883"
 #define CLIENTID    "SpencerMcD$testCSDK$testC1"
