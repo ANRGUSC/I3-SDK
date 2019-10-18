@@ -11,4 +11,6 @@ set(${this_sample_name}_src_files
     ./main.c
 )
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
 i3_build_c_sample_target(${this_sample_name} "samples/publish")

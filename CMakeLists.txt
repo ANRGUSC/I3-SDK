@@ -8,6 +8,8 @@ include("build_all/helper.cmake")
 option(skip_i3_samples "set skip_i3_samples ON if you do not wish to compile\
                         included samples with source code (default OFF)" OFF)
 
+# set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
 # set source files
 set(i3_sdk_c_src_files
     ${PROJECT_SOURCE_DIR}/src/i3_client.c
@@ -39,7 +41,7 @@ target_include_directories(i3_sdk_c PRIVATE
     # paho-mqtt3cs
     # paho-mqtt3a
     # paho-mqtt3as
-target_link_libraries(i3_sdk_c paho-mqtt3c)
+target_link_libraries(i3_sdk_c paho-mqtt3c -DCMAKE_BUILD_TYPE=Debug)
 
 # add subdirectories (e.g. dependencies)
 add_subdirectory(${PROJECT_SOURCE_DIR}/deps/paho.mqtt.c)
