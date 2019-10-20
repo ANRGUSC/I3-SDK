@@ -91,13 +91,15 @@ int i3_client_create(i3_mqtt_client* _i3_mqtt_client, const char* const endpoint
     _i3_mqtt_client->conn_opts = &connection_options;
     MQTTClient_message publish_message = MQTTClient_message_initializer;
     _i3_mqtt_client->pubmsg = &publish_message;
-    MQTTClient_deliveryToken token;
-    _i3_mqtt_client->token = &token;
+    // MQTTClient_deliveryToken token;
+    // _i3_mqtt_client->token = &token;
 
     // create client
     // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
     MQTTClient_create(_i3_mqtt_client->client, endpoint_address, account,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
+
+    printf("conn_opts->struct_id inside create = %s\n", _i3_mqtt_client->conn_opts->struct_id);
 
     // populate conn_opts
     _i3_mqtt_client->conn_opts->keepAliveInterval = 20;
@@ -105,6 +107,7 @@ int i3_client_create(i3_mqtt_client* _i3_mqtt_client, const char* const endpoint
     // note: we will be setting the username to CLIENTID (opposite of subscribe)
     _i3_mqtt_client->conn_opts->username = client_id;
     _i3_mqtt_client->conn_opts->password = password;
+    printf("conn_opts->struct_id modifying variable = %s\n", _i3_mqtt_client->conn_opts->struct_id);
 
     return 0;
 }
@@ -114,14 +117,15 @@ int main(int argc, char* argv[])
     int rc;
     
     // create client
-    i3_mqtt_client* my_i3_client = i3_malloc_mqtt_client();
+    i3_mqtt_client* my_i3_client;
 
     if ((rc = i3_client_create(my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", rc);
         exit(EXIT_FAILURE);
     }
-    printf("conn_opts->structure = %s\n", my_i3_client->conn_opts->struct_id);
+    printf("conn_opts->struct_id after create = %s\n", my_i3_client->conn_opts->struct_id);
+    printf("conn_opts->username = %s\n", my_i3_client->conn_opts->username);
 
     // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
     // MQTTClient_create(my_i3_client.client, ADDRESS, ACCOUNT,
