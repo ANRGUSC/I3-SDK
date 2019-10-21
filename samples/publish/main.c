@@ -44,6 +44,15 @@ typedef struct i3_mqtt_client_block
     MQTTClient_deliveryToken* token;
 } i3_mqtt_client;
 
+const MQTTClient ref_client;
+const MQTTClient_connectOptions ref_connection_options = MQTTClient_connectOptions_initializer;
+const MQTTClient_message ref_publish_message = MQTTClient_message_initializer;
+const MQTTClient_deliveryToken ref_token;
+// i3_mqtt_client ref_i3_mqtt_client = { &ref_client,
+//                                             &ref_connection_options,
+//                                             &ref_publish_message,
+//                                             &ref_token};
+
 // allocate memory for i3_mqtt_client
 i3_mqtt_client* i3_malloc_mqtt_client (void)
 {
@@ -85,14 +94,10 @@ int i3_client_create(i3_mqtt_client* _i3_mqtt_client, const char* const endpoint
                     const char* const account, const char* const password)
 {   
     // initialize block
-    MQTTClient client;
-    _i3_mqtt_client->client = &client;
-    MQTTClient_connectOptions connection_options = MQTTClient_connectOptions_initializer;
-    _i3_mqtt_client->conn_opts = &connection_options;
-    MQTTClient_message publish_message = MQTTClient_message_initializer;
-    _i3_mqtt_client->pubmsg = &publish_message;
-    // MQTTClient_deliveryToken token;
-    // _i3_mqtt_client->token = &token;
+    *(_i3_mqtt_client->client) = ref_client;
+    *(_i3_mqtt_client->conn_opts) = ref_connection_options;
+    *(_i3_mqtt_client->pubmsg) = ref_publish_message;
+    *(_i3_mqtt_client->token) = ref_token;
 
     // create client
     // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
@@ -117,8 +122,7 @@ int main(int argc, char* argv[])
     int rc;
     
     // create client
-    i3_mqtt_client* my_i3_client;
-
+    i3_mqtt_client* my_i3_client = i3_malloc_mqtt_client();
     if ((rc = i3_client_create(my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", rc);
