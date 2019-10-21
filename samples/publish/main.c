@@ -36,52 +36,29 @@
 #define QOS         1
 #define TIMEOUT     10000L
 
-typedef struct i3_mqtt_client_block
+/**
+ * Control block for I3 mqtt client. 
+ * 
+ * Includes default values with paho initializers. 
+ */
+
+struct i3_client_block
 {
-    MQTTClient* client;
-    MQTTClient_connectOptions* conn_opts;
-    MQTTClient_message* pubmsg;
-    MQTTClient_deliveryToken* token;
-} i3_mqtt_client;
-
-const MQTTClient ref_client;
-const MQTTClient_connectOptions ref_connection_options = MQTTClient_connectOptions_initializer;
-const MQTTClient_message ref_publish_message = MQTTClient_message_initializer;
-const MQTTClient_deliveryToken ref_token;
-// i3_mqtt_client ref_i3_mqtt_client = { &ref_client,
-//                                             &ref_connection_options,
-//                                             &ref_publish_message,
-//                                             &ref_token};
-
-// allocate memory for i3_mqtt_client
-i3_mqtt_client* i3_malloc_mqtt_client (void)
-{
-    // allocate memory for our control block
-    i3_mqtt_client* new_mqtt_client = (i3_mqtt_client*)malloc(sizeof(i3_mqtt_client));
-    if(new_mqtt_client == NULL)
-        return NULL;
-
-    // allocate memory for all member objects
-    new_mqtt_client->client = (MQTTClient*)malloc(sizeof(MQTTClient));
-    if(new_mqtt_client->client == NULL)
-        return NULL;
-    new_mqtt_client->conn_opts = (MQTTClient_connectOptions*)malloc(sizeof(MQTTClient_connectOptions));
-    if(new_mqtt_client->conn_opts == NULL)
-        return NULL;
-    new_mqtt_client->pubmsg = (MQTTClient_message*)malloc(sizeof(MQTTClient_message));
-    if(new_mqtt_client->pubmsg == NULL)
-        return NULL;
-    new_mqtt_client->token = (MQTTClient_deliveryToken*)malloc(sizeof(MQTTClient_deliveryToken));
-    if(new_mqtt_client->token == NULL)
-        return NULL;
-
-    return new_mqtt_client;
-}
+    MQTTClient client;
+    MQTTClient_connectOptions conn_opts;
+    MQTTClient_message pubmsg;
+    MQTTClient_deliveryToken token;
+} const ref_i3_client = {  (MQTTClient)NULL,
+                                MQTTClient_connectOptions_initializer,
+                                MQTTClient_message_initializer,
+                                (MQTTClient_deliveryToken)NULL
+                            };
+typedef struct i3_client_block i3_client_handle;
 
 /**
- * @brief initializes #i3_mqtt_client_block and calls MQTTClient_create()
+ * @brief initializes #i3_client_block and calls MQTTClient_create()
  * 
- * @param _i3_mqtt_client       #i3_mqtt_client client block object
+ * @param _i3_client            #i3_client_handle client block object
  * @param endpoint_address      <tt>const char* const</tt> "broker_address:1883"
  * @param client_id             <tt>const char* const</tt> "my_account_name$my_hub_name$my_device_name"
  * @param account               <tt>const char* const</tt> "my_account_name"
@@ -90,29 +67,20 @@ i3_mqtt_client* i3_malloc_mqtt_client (void)
  * @retval  0                   on success
  * @retval  -1                  on failure
  */
-int i3_client_create(i3_mqtt_client* _i3_mqtt_client, const char* const endpoint_address, const char* const client_id,
+int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
                     const char* const account, const char* const password)
 {   
-    // initialize block
-    *(_i3_mqtt_client->client) = ref_client;
-    *(_i3_mqtt_client->conn_opts) = ref_connection_options;
-    *(_i3_mqtt_client->pubmsg) = ref_publish_message;
-    *(_i3_mqtt_client->token) = ref_token;
-
     // create client
     // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
-    MQTTClient_create(_i3_mqtt_client->client, endpoint_address, account,
+    MQTTClient_create(&_i3_client->client, endpoint_address, account,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
-    printf("conn_opts->struct_id inside create = %s\n", _i3_mqtt_client->conn_opts->struct_id);
-
     // populate conn_opts
-    _i3_mqtt_client->conn_opts->keepAliveInterval = 20;
-    _i3_mqtt_client->conn_opts->cleansession = 1;
+    _i3_client->conn_opts.keepAliveInterval = 20;
+    _i3_client->conn_opts.cleansession = 1;
     // note: we will be setting the username to CLIENTID (opposite of subscribe)
-    _i3_mqtt_client->conn_opts->username = client_id;
-    _i3_mqtt_client->conn_opts->password = password;
-    printf("conn_opts->struct_id modifying variable = %s\n", _i3_mqtt_client->conn_opts->struct_id);
+    _i3_client->conn_opts.username = client_id;
+    _i3_client->conn_opts.password = password;
 
     return 0;
 }
@@ -122,53 +90,33 @@ int main(int argc, char* argv[])
     int rc;
     
     // create client
-    i3_mqtt_client* my_i3_client = i3_malloc_mqtt_client();
-    if ((rc = i3_client_create(my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD)) != 0)
+    i3_client_handle my_i3_client = ref_i3_client;
+
+    if ((rc = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", rc);
         exit(EXIT_FAILURE);
     }
-    printf("conn_opts->struct_id after create = %s\n", my_i3_client->conn_opts->struct_id);
-    printf("conn_opts->username = %s\n", my_i3_client->conn_opts->username);
 
-    // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
-    // MQTTClient_create(my_i3_client.client, ADDRESS, ACCOUNT,
-    //     MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    // my_i3_client.conn_opts->keepAliveInterval = 20;
-    // my_i3_client.conn_opts->cleansession = 1;
-    // // note: we will be se-tting the username to CLIENTID (opposite of subscribe)
-    // my_i3_client.conn_opts->username = CLIENTID;
-    // my_i3_client.conn_opts->password = PASSWORD;
-
-    // my_i3_client.client
-    // printf("mqttversion = %d\n", my_i3_client.client);
-    if ((rc = MQTTClient_connect(*(my_i3_client->client), my_i3_client->conn_opts)) != MQTTCLIENT_SUCCESS)
+    if ((rc = MQTTClient_connect(my_i3_client.client, &my_i3_client.conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     }
 
-    my_i3_client->pubmsg->payload = PAYLOAD;
-    my_i3_client->pubmsg->payloadlen = (int)strlen(PAYLOAD);
-    my_i3_client->pubmsg->qos = QOS;
-    my_i3_client->pubmsg->retained = 0;
+    my_i3_client.pubmsg.payload = PAYLOAD;
+    my_i3_client.pubmsg.payloadlen = (int)strlen(PAYLOAD);
+    my_i3_client.pubmsg.qos = QOS;
+    my_i3_client.pubmsg.retained = 0;
 
-    MQTTClient_publishMessage(*my_i3_client->client, TOPIC, my_i3_client->pubmsg, my_i3_client->token);
+    MQTTClient_publishMessage(my_i3_client.client, TOPIC, &my_i3_client.pubmsg, &my_i3_client.token);
     printf("Waiting for up to %d seconds for publication of %s\n"
             "on topic %s for client with ClientID: %s\n",
             (int)(TIMEOUT/1000), PAYLOAD, TOPIC, CLIENTID);
-    rc = MQTTClient_waitForCompletion(*my_i3_client->client, *my_i3_client->token, TIMEOUT);
-    printf("Message with delivery token %d delivered\n", *my_i3_client->token);
-    MQTTClient_disconnect(*my_i3_client->client, 10000);
-    MQTTClient_destroy(my_i3_client->client);
+    rc = MQTTClient_waitForCompletion(my_i3_client.client, my_i3_client.token, TIMEOUT);
+    printf("Message with delivery token %d delivered\n", my_i3_client.token);
+    MQTTClient_disconnect(my_i3_client.client, 10000);
+    MQTTClient_destroy(&my_i3_client.client);
 
-    if(my_i3_client != NULL)
-    {
-        free(my_i3_client->client);
-        free(my_i3_client->conn_opts);
-        free(my_i3_client->pubmsg);
-        free(my_i3_client->token);
-        free(my_i3_client);
-    }
     return rc;
 }
