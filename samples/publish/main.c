@@ -61,11 +61,11 @@ struct i3_client_block
 typedef struct i3_client_block i3_client_handle;
 
 /**
- * @brief initializes #i3_client_block and calls MQTTClient_create(MQTTClient)NULL,()
- *                         MQTTClient_connectOptions_initializer,
- * @param _i3_client            #i3_client_handle                        MQTTClient_message_initializer,
- * @param endpoint_address      <tt>const char* const</tt> "broker                        (MQTTClient_deliveryToken)0_address:1883"
- * @param client_id             <tt>const char* const</tt> "my_account_name$my_hub_name$my_device_name"
+ * @brief initializes #i3_client_block and calls MQTTClient_createbroker
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param endpoint_address      <tt>const char* const</tt> "broker address"
+ * @param client_id             <tt>const char* const</tt> "my_account_name$my_hubbroker_name$my_device_name"
  * @param account               <tt>const char* const</tt> "my_account_name"
  * @param password              <tt>const char* const</tt> "my_account_password"
  * 
@@ -105,6 +105,79 @@ int i3_connect(i3_client_handle* _i3_client)
     return MQTTClient_connect(_i3_client->client, &_i3_client->conn_opts);
 }
 
+/**
+ * @brief publishes message to I3 topic
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param payload               <tt>void*</tt> payload to publish
+ * @param topic                 <tt>const char* const</tt> the topic to be published on
+ * @param qos                   <tt>int</tt> quality of service selector
+ *                                  0: Fire and forget
+ *                                  1: At least once - the message will be delivered, but may be
+ *                                      delivered more than once in some circumstances
+ *                                  2: Once and ony once
+ * @param timeout               <tt>unsigned long</tt> the time to wait for publish ack in ms
+ * @param retain                <tt>int</tt> 1 to keep message after publish, 0 to clear message 
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
+int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, int qos, 
+                unsigned long timeout, int retain)
+{
+    int result = RESULT_INIT;
+
+    _i3_client->pubmsg.payload = payload;
+    _i3_client->pubmsg.payloadlen = (int)sizeof(payload);
+    _i3_client->pubmsg.qos = qos;
+    _i3_client->pubmsg.retained = retain;
+
+    if((result = MQTTClient_publishMessage(_i3_client->client, topic, &_i3_client->pubmsg, &_i3_client->token)) == MQTTCLIENT_SUCCESS)
+    {
+        printf("Waiting for up to %d seconds for publication of %s\n"
+            "on topic %s for client with ClientID: %s\n",
+            (int)(timeout/1000), (char*)payload, topic, _i3_client->conn_opts.username);
+        if((result = MQTTClient_waitForCompletion(_i3_client->client, _i3_client->token, timeout)) == MQTTCLIENT_SUCCESS)
+        {   
+            printf("Message with delivery token %d delivered\n", _i3_client->token);
+        }
+        else
+        {
+            printf("Message not delivered\n");
+        }
+    }
+    else
+    {
+        printf("Issue with MQTTClient_publishMessage()\n");        
+    }
+
+    return result;
+}
+
+/**
+ * @brief calls MQTTClient_disconnect()
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param timeout               <tt>int</tt> time to wait for disconnect ack in ms
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
+int i3_disconnect(i3_client_handle* _i3_client, int timeout)
+{
+    return MQTTClient_disconnect(_i3_client->client, timeout);
+}
+
+/**
+ * @brief calls MQTTClient_destroy())
+ * 
+ * @param _i3_client            #i3_client_handle
+ */
+void i3_client_destroy(i3_client_handle* _i3_client)
+{
+    MQTTClient_destroy(&_i3_client->client);
+}
+
 int main(int argc, char* argv[])
 {
     int result;
@@ -122,20 +195,21 @@ int main(int argc, char* argv[])
         printf("Failed to connect, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
-
-    my_i3_client.pubmsg.payload = PAYLOAD;
-    my_i3_client.pubmsg.payloadlen = (int)strlen(PAYLOAD);
-    my_i3_client.pubmsg.qos = QOS;
-    my_i3_client.pubmsg.retained = 0;
-
-    MQTTClient_publishMessage(my_i3_client.client, TOPIC, &my_i3_client.pubmsg, &my_i3_client.token);
-    printf("Waiting for up to %d seconds for publication of %s\n"
-            "on topic %s for client with ClientID: %s\n",
-            (int)(TIMEOUT/1000), PAYLOAD, TOPIC, CLIENTID);
-    result = MQTTClient_waitForCompletion(my_i3_client.client, my_i3_client.token, TIMEOUT);
-    printf("Message with delivery token %d delivered\n", my_i3_client.token);
-    MQTTClient_disconnect(my_i3_client.client, 10000);
-    MQTTClient_destroy(&my_i3_client.client);
+    else if((result = i3_publish(&my_i3_client, TOPIC, PAYLOAD, QOS, TIMEOUT, 0)) != 0)
+    {
+        printf("Failed to publish, return code %d\n", result);
+        exit(EXIT_FAILURE);
+    }
+    else if ((result = i3_disconnect(&my_i3_client, (int)TIMEOUT)) != 0)
+    {
+        printf("Failed to disconnect, return code %d\n", result);
+        exit(EXIT_FAILURE);
+    }
+    
+    if(&my_i3_client != NULL)
+    {
+        i3_client_destroy(&my_i3_client);
+    }
 
     return result;
 }
