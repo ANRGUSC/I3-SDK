@@ -11,7 +11,7 @@ Please modify the following script files to point at the I3 running instance alo
 The scripts writes into a configurable log file.
 
 To test them you would need the folowing :
-1. An I3 running instance
+1. An I3 running instance (http://3.15.198.123:8000)
 
 For test_pub :
 
