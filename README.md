@@ -6,6 +6,7 @@ For more information on I3, please visit https://i3.usc.edu/
 
 It is currently designed to show how to send data to and receive data from I3 v0. 
 
+<<<<<<< HEAD
 ## To begin
 Setup:
 Step 1: install openssl
@@ -29,8 +30,16 @@ Step 3: `cmake ..`
 Step 4: `cd samples/sample_name`
 Step 5: `make`
 Step 6: `./sample_name`
+=======
+## Getting Started
+To begin, see the getting_started folder. 
+>>>>>>> a6cd99852724dc8e3cf70155596e05c9c0fcb0d8
 
 ## Contributors 
-This I3 SDK has been initially developed by researchers at the Center for Cyber-Physical Systems and the Internet of Things, Viterbi School of Engineering, University of Southern California. 
+This I3 SDK has been initially developed by researchers at the [Center for Cyber-Physical Systems and the Internet of Things](http://cci.usc.edu/), Viterbi School of Engineering, University of Southern California. 
+[To contribute to the project, please review the contribution guidelines](CONTRIBUTING.md).
+
+## Code of Conduct
+[Please refer the code of conduct to maintain a user and developer friendly environment](CODE_OF_CONDUCT.md)
 
 
