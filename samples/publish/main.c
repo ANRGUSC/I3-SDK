@@ -19,14 +19,14 @@
 #define PASSWORD    "my_account_password"
 */
 #define ADDRESS     "18.219.4.146:1883"
+#define CLIENT_TYPE "publisher"
 #define CLIENTID    "SpencerMcD$testCSDK$testC1"
 #define TOPIC       "SpencerMcD/testCSDK/testProd1"
 #define ACCOUNT     "SpencerMcD"
 #define PASSWORD    "1234567"
-#define PAYLOAD     "Hello World!"
+#define PAYLOAD     "0123456789"
 #define QOS         1
 #define TIMEOUT     10000L
-
 
 int main(int argc, char* argv[])
 {
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
                                     (MQTTClient_deliveryToken)0
                                     };
 
-    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, 20, 1)) != 0)
+    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, 20, 1, CLIENT_TYPE)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
         printf("Failed to connect, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
-    else if((result = i3_publish(&my_i3_client, TOPIC, PAYLOAD, QOS, TIMEOUT, 0)) != 0)
+    else if((result = i3_publish(&my_i3_client, TOPIC, PAYLOAD, (int)strlen(PAYLOAD), QOS, TIMEOUT, 0)) != 0)
     {
         printf("Failed to publish, return code %d\n", result);
         exit(EXIT_FAILURE);

@@ -14,7 +14,8 @@
 // project includes
 
 #define RESULT_INIT INT_MIN
-
+#define I3_CLIENT_TYPE_PUBLISHER    "publisher"
+#define I3_CLIENT_TYPE_SUBSCRIBER   "subscriber"
 // enumerated result values (for error handling)
 #define I3_RESULT_ERROR_FLAG    0x80 
 typedef enum I3_RESULT
@@ -45,8 +46,21 @@ struct i3_client_block
 typedef struct i3_client_block i3_client_handle;
 
 // *************************************** I3-SDK APIs ***************************************
+/**
+ * @brief initializes #i3_client_block and calls MQTTClient_createbroker
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param endpoint_address      <tt>const char* const</tt> "broker address"
+ * @param client_id             <tt>const char* const</tt> "my_account_name$my_hubbroker_name$my_device_name"
+ * @param account               <tt>const char* const</tt> "my_account_name"
+ * @param password              <tt>const char* const</tt> "my_account_password"
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
 int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
-                    const char* const account, const char* const password, int keep_alive_interval, int clean_session);
+                    const char* const account, const char* const password, int keep_alive_interval, int clean_session,
+                    const char* const client_type);
 
 /**
  * @brief calls MQTTClient_connect()
@@ -62,7 +76,8 @@ int i3_connect(i3_client_handle* _i3_client);
  * @brief publishes message to I3 topic
  * 
  * @param _i3_client            #i3_client_handle
- * @param payload               <tt>void*</tt> payload to publish
+ * @param payload               <tt>unsigned char*</tt> payload to publish
+ * @param payload_length        <tt>size_t</tt> length of payload data
  * @param topic                 <tt>const char* const</tt> the topic to be published on
  * @param qos                   <tt>int</tt> quality of service selector
  *                                  0: Fire and forget
@@ -75,8 +90,8 @@ int i3_connect(i3_client_handle* _i3_client);
  * @retval  0                   on success
  * @retval  -1                  on failure
  */
-int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, int qos, 
-                unsigned long timeout, int retain);
+int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
+                int qos, unsigned long timeout, int retain);
 
 /**
  * @brief calls MQTTClient_disconnect()

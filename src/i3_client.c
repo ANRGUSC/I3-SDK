@@ -36,22 +36,39 @@ I3_RESULT i3_print_message(const char* msg)
 }
 
 int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
-                    const char* const account, const char* const password, int keep_alive_interval, int clean_session)
+                    const char* const account, const char* const password, int keep_alive_interval, int clean_session,
+                    const char* const client_type)
 {   
     int result = RESULT_INIT;
     // create client
     // note: we will be creating the client with the ACCOUNT name (opposite of subscribe)
-    if((result = MQTTClient_create(&_i3_client->client, endpoint_address, account,
-        MQTTCLIENT_PERSISTENCE_NONE, NULL)) == 0)
+    if(strncmp(client_type, I3_CLIENT_TYPE_PUBLISHER, sizeof(I3_CLIENT_TYPE_PUBLISHER)) == 0)
     {
-        // populate conn_opts
-        _i3_client->conn_opts.keepAliveInterval = keep_alive_interval;
-        _i3_client->conn_opts.cleansession = clean_session;
-        // note: we will be setting the username to CLIENTID (opposite of subscribe)
-        _i3_client->conn_opts.username = client_id;
-        _i3_client->conn_opts.password = password;
+        if((result = MQTTClient_create(&_i3_client->client, endpoint_address, account,
+            MQTTCLIENT_PERSISTENCE_NONE, NULL)) == 0)
+        {
+            // populate conn_opts
+            _i3_client->conn_opts.keepAliveInterval = keep_alive_interval;
+            _i3_client->conn_opts.cleansession = clean_session;
+            // note: we will be setting the username to CLIENTID (opposite of subscribe)
+            _i3_client->conn_opts.username = client_id;
+            _i3_client->conn_opts.password = password;
+        }
     }
-
+    else if(strncmp(client_type, I3_CLIENT_TYPE_SUBSCRIBER, sizeof(I3_CLIENT_TYPE_SUBSCRIBER)) == 0)
+    {
+        if((result = MQTTClient_create(&_i3_client->client, endpoint_address, client_id,
+            MQTTCLIENT_PERSISTENCE_NONE, NULL)) == 0)
+        {
+            // populate conn_opts
+            _i3_client->conn_opts.keepAliveInterval = keep_alive_interval;
+            _i3_client->conn_opts.cleansession = clean_session;
+            // note: we will be setting the username to CLIENTID (opposite of subscribe)
+            _i3_client->conn_opts.username = account;
+            _i3_client->conn_opts.password = password;
+        }
+    }
+    
     return result;
 }
 
@@ -60,13 +77,12 @@ int i3_connect(i3_client_handle* _i3_client)
     return MQTTClient_connect(_i3_client->client, &_i3_client->conn_opts);
 }
 
-int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, int qos, 
-                unsigned long timeout, int retain)
+int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
+                int qos, unsigned long timeout, int retain)
 {
     int result = RESULT_INIT;
-
     _i3_client->pubmsg.payload = payload;
-    _i3_client->pubmsg.payloadlen = (int)sizeof(payload);
+    _i3_client->pubmsg.payloadlen = payload_length;
     _i3_client->pubmsg.qos = qos;
     _i3_client->pubmsg.retained = retain;
 

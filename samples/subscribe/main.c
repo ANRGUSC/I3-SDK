@@ -1,23 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2012, 2017 IBM Corp.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v1.0 which accompany this distribution. 
- *
- * The Eclipse Public License is available at 
- *   http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at 
- *   http://www.eclipse.org/org/documents/edl-v10.php.
- *
- * Contributors:
- *    Ian Craggs - initial contribution
- *******************************************************************************/
-
+// generic includes
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+// dependency includes
 #include "MQTTClient.h"
+#include "limits.h"
+
+// project includes
+#include "i3_client.h"
 
 /**
  * below is the format to be used when subscribing to an I3 product (topic)
@@ -28,6 +19,7 @@
 #define PASSWORD    "generated_api_key" (find in notifications after subscribing to topic)
 */
 #define ADDRESS     "18.219.4.146:1883"
+#define CLIENT_TYPE "subscriber"
 #define CLIENTID    "shmcdono$testCSub$testCSubClient"
 #define TOPIC       "SpencerMcD/testCSDK/testProd1"
 #define ACCOUNT     "shmcdono"
@@ -71,38 +63,50 @@ void connlost(void *context, char *cause)
 
 int main(int argc, char* argv[])
 {
-    MQTTClient client;
-    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-    int rc;
     int ch;
+    int result;
+    
+    // create client
+    i3_client_handle my_i3_client = {  
+                                    (MQTTClient)NULL,
+                                    MQTTClient_connectOptions_initializer,
+                                    MQTTClient_message_initializer,
+                                    (MQTTClient_deliveryToken)0
+                                    };
 
-    // note: we will be creating the client with the CLIENTID (opposite of publish)
-    MQTTClient_create(&client, ADDRESS, CLIENTID,
-        MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts.keepAliveInterval = 20;
-    conn_opts.cleansession = 1;
-    // note: we will be setting the username to ACCOUNT (opposite of publish)
-    conn_opts.username = ACCOUNT;
-    conn_opts.password = PASSWORD;
-
-    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
-
-    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
+    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, 20, 1, CLIENT_TYPE)) != 0)
     {
-        printf("Failed to connect, return code %d\n", rc);
+        printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
+
+    MQTTClient_setCallbacks(my_i3_client.client, NULL, connlost, msgarrvd, delivered);
+
+    if ((result = i3_connect(&my_i3_client)) != 0)
+    {
+        printf("Failed to connect, return code %d\n", result);
+        exit(EXIT_FAILURE);
+    }
+
     printf("Subscribing to topic %s\nfor client %s using QoS%d\n\n"
            "Press Q<Enter> to quit\n\n", TOPIC, CLIENTID, QOS);
-    MQTTClient_subscribe(client, TOPIC, QOS);
+    MQTTClient_subscribe(my_i3_client.client, TOPIC, QOS);
 
     do 
     {
         ch = getchar();
     } while(ch!='Q' && ch != 'q');
 
-    MQTTClient_unsubscribe(client, TOPIC);
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
-    return rc;
+    MQTTClient_unsubscribe(my_i3_client.client, TOPIC);
+
+    if ((result = i3_disconnect(&my_i3_client, (int)TIMEOUT)) != 0)
+    {
+        printf("Failed to disconnect, return code %d\n", result);
+        exit(EXIT_FAILURE);
+    }
+    
+    if(&my_i3_client != NULL)
+    {
+        i3_client_destroy(&my_i3_client);
+    }
 }
