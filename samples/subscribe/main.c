@@ -27,15 +27,17 @@
 #define QOS         1
 #define TIMEOUT     10000L
 
-volatile MQTTClient_deliveryToken deliveredtoken;
+// variable to handle delivery flag
+volatile MQTTClient_deliveryToken delivered_token;
 
-void delivered(void *context, MQTTClient_deliveryToken dt)
+void message_delivered(void *context, MQTTClient_deliveryToken dt)
 {
     printf("Message with token value %d delivery confirmed\n", dt);
-    deliveredtoken = dt;
+    delivered_token = dt;
 }
 
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
+int message_arrived(void *context, char *topicName, int topicLen, 
+                    MQTTClient_message *message)
 {
     int i;
     char* payloadptr;
@@ -55,7 +57,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-void connlost(void *context, char *cause)
+void connection_lost(void *context, char *cause)
 {
     printf("\nConnection lost\n");
     printf("     cause: %s\n", cause);
@@ -79,7 +81,8 @@ int main(int argc, char* argv[])
         printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
-    if((result = i3_set_callbacks(&my_i3_client, NULL, connlost, msgarrvd, delivered)) != 0)
+    if((result = i3_set_callbacks(&my_i3_client, NULL, connection_lost, 
+        message_arrived, message_delivered)) != 0)
     {
         printf("Failed to set callbacks, return code %d\n", result);
         exit(EXIT_FAILURE);
