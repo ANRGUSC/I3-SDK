@@ -73,6 +73,21 @@ int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_ad
 int i3_connect(i3_client_handle* _i3_client);
 
 /**
+ * @brief registers callback functions
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param context               <tt>void*</tt> context pointer
+ * @param connection_lost       <tt>void*</tt> pointer to connection lost callback function
+ * @param message_arrived       <tt>void*</tt> pointer to message arrived callback function
+ * @param message_delivered     <tt>void*</tt> pointer to message delivered callback function
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure 
+ */
+int i3_set_callbacks(i3_client_handle* _i3_client, void* context, void* connection_lost,
+                    void* message_arrived, void* message_delivered);
+
+/**
  * @brief publishes message to I3 topic
  * 
  * @param _i3_client            #i3_client_handle
@@ -93,6 +108,32 @@ int i3_connect(i3_client_handle* _i3_client);
 int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
                 int qos, unsigned long timeout, int retain);
 
+/**
+ * @brief subscribes client to I3 topic
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param topic                 <tt>const char* const</tt> the topic to be published on
+ * @param qos                   <tt>int</tt> quality of service selector
+ *                                  0: Fire and forget
+ *                                  1: At least once - the message will be delivered, but may be
+ *                                      delivered more than once in some circumstances
+ *                                  2: Once and ony once
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
+int i3_subscribe(i3_client_handle* _i3_client, const char* const topic, int qos);
+
+/**
+ * @brief unsubscribes client from I3 topic
+ * 
+ * @param _i3_client            #i3_client_handle
+ * @param topic                 <tt>const char* const</tt> the topic to be published on
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
+int i3_unsubscribe(i3_client_handle* _i3_client, const char* const topic);
 /**
  * @brief calls MQTTClient_disconnect()
  * 

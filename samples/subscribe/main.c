@@ -79,9 +79,11 @@ int main(int argc, char* argv[])
         printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
-
-    MQTTClient_setCallbacks(my_i3_client.client, NULL, connlost, msgarrvd, delivered);
-
+    if((result = i3_set_callbacks(&my_i3_client, NULL, connlost, msgarrvd, delivered)) != 0)
+    {
+        printf("Failed to set callbacks, return code %d\n", result);
+        exit(EXIT_FAILURE);
+    }
     if ((result = i3_connect(&my_i3_client)) != 0)
     {
         printf("Failed to connect, return code %d\n", result);
@@ -90,14 +92,23 @@ int main(int argc, char* argv[])
 
     printf("Subscribing to topic %s\nfor client %s using QoS%d\n\n"
            "Press Q<Enter> to quit\n\n", TOPIC, CLIENTID, QOS);
-    MQTTClient_subscribe(my_i3_client.client, TOPIC, QOS);
+
+    if ((result = i3_subscribe(&my_i3_client, TOPIC, QOS)) != 0)
+    {
+        printf("Failed to subscribe to topic %s, return code %d\n", TOPIC, result);
+        exit(EXIT_FAILURE);
+    }
 
     do 
     {
         ch = getchar();
     } while(ch!='Q' && ch != 'q');
 
-    MQTTClient_unsubscribe(my_i3_client.client, TOPIC);
+    if ((result = i3_unsubscribe(&my_i3_client, TOPIC)) != 0)
+    {
+        printf("Failed to unsubscribe from topic %s, return code %d\n", TOPIC, result);
+        exit(EXIT_FAILURE);
+    }
 
     if ((result = i3_disconnect(&my_i3_client, (int)TIMEOUT)) != 0)
     {

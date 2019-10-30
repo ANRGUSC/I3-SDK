@@ -77,6 +77,13 @@ int i3_connect(i3_client_handle* _i3_client)
     return MQTTClient_connect(_i3_client->client, &_i3_client->conn_opts);
 }
 
+int i3_set_callbacks(i3_client_handle* _i3_client, void* context, void* connection_lost,
+                    void* message_arrived, void* message_delivered)
+{
+    return MQTTClient_setCallbacks(_i3_client->client, context, connection_lost, message_arrived, 
+                    message_delivered);
+}
+
 int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
                 int qos, unsigned long timeout, int retain)
 {
@@ -106,6 +113,16 @@ int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payl
     }
 
     return result;
+}
+
+int i3_subscribe(i3_client_handle* _i3_client, const char* const topic, int qos)
+{
+    return MQTTClient_subscribe(_i3_client->client, topic, qos);
+}
+
+int i3_unsubscribe(i3_client_handle* _i3_client, const char* const topic)
+{
+    return MQTTClient_unsubscribe(_i3_client->client, topic);
 }
 
 int i3_disconnect(i3_client_handle* _i3_client, int timeout)
