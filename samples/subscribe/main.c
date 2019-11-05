@@ -9,6 +9,7 @@
 
 // project includes
 #include "i3_client.h"
+#include "i3_config.h"
 
 /**
  * below is the format to be used when subscribing to an I3 product (topic)
@@ -76,7 +77,7 @@ int main(int argc, char* argv[])
                                     (MQTTClient_deliveryToken)0
                                     };
 
-    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, 20, 1, CLIENT_TYPE)) != 0)
+    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, CLIENT_TYPE)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
@@ -94,9 +95,9 @@ int main(int argc, char* argv[])
     }
 
     printf("Subscribing to topic %s\nfor client %s using QoS%d\n\n"
-           "Press Q<Enter> to quit\n\n", TOPIC, CLIENTID, QOS);
+           "Press Q<Enter> to quit\n\n", TOPIC, CLIENTID, I3_MQTT_QUALITY_OF_SERVICE);
 
-    if ((result = i3_subscribe(&my_i3_client, TOPIC, QOS)) != 0)
+    if ((result = i3_subscribe(&my_i3_client, TOPIC)) != 0)
     {
         printf("Failed to subscribe to topic %s, return code %d\n", TOPIC, result);
         exit(EXIT_FAILURE);

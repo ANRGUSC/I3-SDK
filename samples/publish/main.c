@@ -9,6 +9,7 @@
 
 // project includes
 #include "i3_client.h"
+#include "i3_config.h"
 
 /**
  * below is the format to be used when publishing to an I3 product (topic)
@@ -40,7 +41,7 @@ int main(int argc, char* argv[])
                                     (MQTTClient_deliveryToken)0
                                     };
 
-    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, 20, 1, CLIENT_TYPE)) != 0)
+    if ((result = i3_client_create(&my_i3_client, ADDRESS, CLIENTID, ACCOUNT, PASSWORD, CLIENT_TYPE)) != 0)
     {
         printf("Failed to create I3 client, return code %d\n", result);
         exit(EXIT_FAILURE);
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
         printf("Failed to connect, return code %d\n", result);
         exit(EXIT_FAILURE);
     }
-    else if((result = i3_publish(&my_i3_client, TOPIC, PAYLOAD, (int)strlen(PAYLOAD), QOS, TIMEOUT, 0)) != 0)
+    else if((result = i3_publish(&my_i3_client, TOPIC, PAYLOAD, (int)strlen(PAYLOAD))) != 0)
     {
         printf("Failed to publish, return code %d\n", result);
         exit(EXIT_FAILURE);

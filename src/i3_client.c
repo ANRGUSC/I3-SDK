@@ -9,6 +9,7 @@
 
 // project includes
 #include "i3_client.h"
+#include "i3_config.h"
 
 I3_RESULT i3_print_message(const char* msg)
 {
@@ -36,8 +37,7 @@ I3_RESULT i3_print_message(const char* msg)
 }
 
 int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
-                    const char* const account, const char* const password, int keep_alive_interval, int clean_session,
-                    const char* const client_type)
+                    const char* const account, const char* const password, const char* const client_type)
 {   
     int result = RESULT_INIT;
     // create client
@@ -48,8 +48,8 @@ int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_ad
             MQTTCLIENT_PERSISTENCE_NONE, NULL)) == 0)
         {
             // populate conn_opts
-            _i3_client->conn_opts.keepAliveInterval = keep_alive_interval;
-            _i3_client->conn_opts.cleansession = clean_session;
+            _i3_client->conn_opts.keepAliveInterval = I3_MQTT_KEEP_ALIVE_INTERVAL;
+            _i3_client->conn_opts.cleansession = I3_MQTT_CLEAN_SESSION;
             // note: we will be setting the username to CLIENTID (opposite of subscribe)
             _i3_client->conn_opts.username = client_id;
             _i3_client->conn_opts.password = password;
@@ -61,8 +61,8 @@ int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_ad
             MQTTCLIENT_PERSISTENCE_NONE, NULL)) == 0)
         {
             // populate conn_opts
-            _i3_client->conn_opts.keepAliveInterval = keep_alive_interval;
-            _i3_client->conn_opts.cleansession = clean_session;
+            _i3_client->conn_opts.keepAliveInterval = I3_MQTT_KEEP_ALIVE_INTERVAL;
+            _i3_client->conn_opts.cleansession = I3_MQTT_CLEAN_SESSION;
             // note: we will be setting the username to CLIENTID (opposite of subscribe)
             _i3_client->conn_opts.username = account;
             _i3_client->conn_opts.password = password;
@@ -85,21 +85,20 @@ int i3_set_callbacks(i3_client_handle* _i3_client, void* context, void* connecti
                     message_delivered);
 }
 
-int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
-                int qos, unsigned long timeout, int retain)
+int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length)
 {
     int result = RESULT_INIT;
     _i3_client->pubmsg.payload = payload;
     _i3_client->pubmsg.payloadlen = payload_length;
-    _i3_client->pubmsg.qos = qos;
-    _i3_client->pubmsg.retained = retain;
+    _i3_client->pubmsg.qos = I3_MQTT_QUALITY_OF_SERVICE;
+    _i3_client->pubmsg.retained = I3_MQTT_RETAIN;
 
     if((result = MQTTClient_publishMessage(_i3_client->client, topic, &_i3_client->pubmsg, &_i3_client->token)) == MQTTCLIENT_SUCCESS)
     {
         printf("Waiting for up to %d seconds for publication of %s\n"
             "on topic %s for client with ClientID: %s\n",
-            (int)(timeout/1000), (char*)payload, topic, _i3_client->conn_opts.username);
-        if((result = MQTTClient_waitForCompletion(_i3_client->client, _i3_client->token, timeout)) == MQTTCLIENT_SUCCESS)
+            (int)(I3_MQTT_TIMEOUT/1000), (char*)payload, topic, _i3_client->conn_opts.username);
+        if((result = MQTTClient_waitForCompletion(_i3_client->client, _i3_client->token, I3_MQTT_TIMEOUT)) == MQTTCLIENT_SUCCESS)
         {   
             printf("Message with delivery token %d delivered\n", _i3_client->token);
         }
@@ -116,9 +115,9 @@ int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payl
     return result;
 }
 
-int i3_subscribe(i3_client_handle* _i3_client, const char* const topic, int qos)
+int i3_subscribe(i3_client_handle* _i3_client, const char* const topic)
 {
-    return MQTTClient_subscribe(_i3_client->client, topic, qos);
+    return MQTTClient_subscribe(_i3_client->client, topic, I3_MQTT_QUALITY_OF_SERVICE);
 }
 
 int i3_unsubscribe(i3_client_handle* _i3_client, const char* const topic)

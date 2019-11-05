@@ -59,8 +59,7 @@ typedef struct i3_client_block i3_client_handle;
  * @retval  -1                  on failure
  */
 int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
-                    const char* const account, const char* const password, int keep_alive_interval, int clean_session,
-                    const char* const client_type);
+                    const char* const account, const char* const password, const char* const client_type);
 
 /**
  * @brief sets connection options
@@ -115,8 +114,7 @@ int i3_set_callbacks(i3_client_handle* _i3_client, void* context, void* connecti
  * @retval  0                   on success
  * @retval  -1                  on failure
  */
-int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length,
-                int qos, unsigned long timeout, int retain);
+int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payload, size_t payload_length);
 
 /**
  * @brief subscribes client to I3 topic
@@ -132,7 +130,7 @@ int i3_publish(i3_client_handle* _i3_client, const char* const topic, void* payl
  * @retval  0                   on success
  * @retval  -1                  on failure
  */
-int i3_subscribe(i3_client_handle* _i3_client, const char* const topic, int qos);
+int i3_subscribe(i3_client_handle* _i3_client, const char* const topic);
 
 /**
  * @brief unsubscribes client from I3 topic
