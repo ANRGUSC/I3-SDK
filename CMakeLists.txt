@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.2)
 
 project(i3_sdk_c)
 
+# set(CMAKE_C_COMPILER /usr/bin/arm-none-eabi-gcc)
 # include helper functions
+include("build_helper/codesourcery_toolchain.cmake")
+include("build_helper/cmake_header.cmake")
 include("build_helper/helper.cmake")
 
 option(skip_i3_samples "set skip_i3_samples ON if you do not wish to compile\
@@ -45,7 +48,11 @@ target_link_libraries(i3_sdk_c paho-mqtt3c -DCMAKE_BUILD_TYPE=Debug)
 
 # add subdirectories (e.g. dependencies)
 add_subdirectory(${PROJECT_SOURCE_DIR}/deps/paho.mqtt.c)
-
+ 
 if(NOT ${skip_i3_samples})
     add_subdirectory(samples)
 endif()
+
+add_executable(mbed_kitt ${i3_sdk_c_src_files}  ${CHIP})
+target_link_libraries(mbed_kitt mbed capi)
+make_mbed_firmware(mbed_kitt)
