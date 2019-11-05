@@ -72,6 +72,7 @@ int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_ad
     return result;
 }
 
+// int i3_set_options()gtr
 int i3_connect(i3_client_handle* _i3_client)
 {
     return MQTTClient_connect(_i3_client->client, &_i3_client->conn_opts);

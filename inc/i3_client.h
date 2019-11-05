@@ -47,11 +47,11 @@ typedef struct i3_client_block i3_client_handle;
 
 // *************************************** I3-SDK APIs ***************************************
 /**
- * @brief initializes #i3_client_block and calls MQTTClient_createbroker
+ * @brief initializes #i3_client_block and calls MQTTClient_create
  * 
  * @param _i3_client            #i3_client_handle
  * @param endpoint_address      <tt>const char* const</tt> "broker address"
- * @param client_id             <tt>const char* const</tt> "my_account_name$my_hubbroker_name$my_device_name"
+ * @param client_id             <tt>const char* const</tt> "my_account_name$my_hub_name$my_device_name"
  * @param account               <tt>const char* const</tt> "my_account_name"
  * @param password              <tt>const char* const</tt> "my_account_password"
  * 
@@ -61,6 +61,16 @@ typedef struct i3_client_block i3_client_handle;
 int i3_client_create(i3_client_handle* _i3_client, const char* const endpoint_address, const char* const client_id,
                     const char* const account, const char* const password, int keep_alive_interval, int clean_session,
                     const char* const client_type);
+
+/**
+ * @brief sets connection options
+ * 
+ * @param _i3_client            #i3_client_handle
+ * 
+ * @retval  0                   on success
+ * @retval  -1                  on failure
+ */
+int i3_set_connection_options(i3_client_handle* _i3_client);
 
 /**
  * @brief calls MQTTClient_connect()

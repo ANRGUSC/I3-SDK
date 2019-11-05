@@ -2,5 +2,6 @@
     "files.associations": {
         "stdlib.h": "c",
         "mqttclient.h": "c"
-    }
+    },
+    "stm32-for-vscode.makePath": "make"
 }
