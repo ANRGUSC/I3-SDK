@@ -18,7 +18,7 @@ For pub :
 **host** refers to MQTT broker  
 
 For sub  :  
-**account** refers to username on i3 Marketplace of the subscriber  
+**account** refers to username on I3 Marketplace of the subscriber  
 **pw** referes to password obtained in the notification tray  
 **host** refers to MQTT broker  
 
